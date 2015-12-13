@@ -27,6 +27,7 @@ public class App extends Configured implements Tool {
     job.setJarByClass(getClass());
     FileInputFormat.addInputPath(job, new Path(args[0]));
     FileOutputFormat.setOutputPath(job, new Path(args[1]));
+    job.setNumReduceTasks(0);
     return job.waitForCompletion(true) ? 0 : 1;
   }
 }
