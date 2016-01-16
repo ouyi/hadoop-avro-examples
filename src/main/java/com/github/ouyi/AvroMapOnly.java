@@ -2,6 +2,7 @@ package com.github.ouyi;
 
 import com.github.ouyi.avro.Imps;
 import org.apache.avro.Schema;
+import org.apache.avro.generic.GenericRecord;
 import org.apache.avro.mapred.AvroKey;
 import org.apache.avro.mapreduce.AvroJob;
 import org.apache.avro.mapreduce.AvroKeyInputFormat;
@@ -25,15 +26,15 @@ import java.util.Arrays;
  */
 public class AvroMapOnly extends Configured implements Tool {
 
-    static class AvroIdentityMapper extends Mapper<AvroKey<Imps>, NullWritable, AvroKey<Imps>, NullWritable> {
+    static class AvroIdentityMapper extends Mapper<AvroKey<GenericRecord>, NullWritable, AvroKey<Imps>, NullWritable> {
 
         @Override
-        protected void map(AvroKey<Imps> key, NullWritable value, Context context)
+        protected void map(AvroKey<GenericRecord> key, NullWritable value, Context context)
                 throws IOException, InterruptedException {
-            Imps record = key.datum();
-            int id = record.getId();
+            GenericRecord record = key.datum();
+            int id = (Integer) record.get("id");
             if (id != 3) {
-                Imps r = Imps.newBuilder().setId(record.getId()).setName(record.getName()).setCount(record.getCount()).build();
+                Imps r = Imps.newBuilder().setId((Integer) record.get("id")).setName((CharSequence) record.get("name")).setCount((Integer) record.get("count")).build();
                 context.write(new AvroKey(r), NullWritable.get());
             }
         }
