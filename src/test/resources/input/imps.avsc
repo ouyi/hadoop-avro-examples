@@ -1,0 +1,19 @@
+{
+    "namespace": "com.github.ouyi.avro",
+    "fields": [
+        {
+            "name": "id",
+            "type": "int"
+        },
+        {
+            "name": "name",
+            "type": "string"
+        },
+        {
+            "name": "count",
+            "type": "int"
+        }
+    ],
+    "name": "Imps",
+    "type": "record"
+}
