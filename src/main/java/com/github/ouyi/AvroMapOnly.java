@@ -2,6 +2,7 @@ package com.github.ouyi;
 
 import com.github.ouyi.avro.Imps;
 import org.apache.avro.Schema;
+import org.apache.avro.generic.GenericData;
 import org.apache.avro.generic.GenericRecord;
 import org.apache.avro.mapred.AvroKey;
 import org.apache.avro.mapreduce.AvroJob;
@@ -26,7 +27,7 @@ import java.util.Arrays;
  */
 public class AvroMapOnly extends Configured implements Tool {
 
-    static class AvroIdentityMapper extends Mapper<AvroKey<GenericRecord>, NullWritable, AvroKey<Imps>, NullWritable> {
+    static class AvroIdentityMapper extends Mapper<AvroKey<GenericRecord>, NullWritable, AvroKey<GenericRecord>, NullWritable> {
 
         @Override
         protected void map(AvroKey<GenericRecord> key, NullWritable value, Context context)
@@ -34,7 +35,11 @@ public class AvroMapOnly extends Configured implements Tool {
             GenericRecord record = key.datum();
             int id = (Integer) record.get("id");
             if (id != 3) {
-                Imps r = Imps.newBuilder().setId((Integer) record.get("id")).setName((CharSequence) record.get("name")).setCount((Integer) record.get("count")).build();
+                GenericRecord r = new GenericData.Record(record.getSchema());
+                r.put("id", record.get("id"));
+                r.put("name", record.get("name"));
+                r.put("count", record.get("count"));
+//                Imps r = Imps.newBuilder().setId((Integer) record.get("id")).setName((CharSequence) record.get("name")).setCount((Integer) record.get("count")).build();
                 context.write(new AvroKey(r), NullWritable.get());
             }
         }
