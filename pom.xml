@@ -4,11 +4,11 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.github.ouyi</groupId>
-    <artifactId>hadoop-file-by-key</artifactId>
+    <artifactId>hadoop-avro-examples</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>jar</packaging>
 
-    <name>hadoop-file-by-key</name>
+    <name>hadoop-avro-examples</name>
     <url>http://maven.apache.org</url>
 
     <properties>

@@ -1,4 +1,4 @@
 .idea/
 dependency-reduced-pom.xml
-hadoop-file-by-key.iml
+hadoop-avro-examples.iml
 target/
