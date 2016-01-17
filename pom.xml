@@ -31,6 +31,7 @@
             <groupId>org.apache.avro</groupId>
             <artifactId>avro</artifactId>
             <version>1.7.4</version>
+            <!-- based on https://hadoop.apache.org/docs/current/hadoop-mapreduce-client/hadoop-mapreduce-client-core/dependency-analysis.html -->
         </dependency>
         <dependency>
             <groupId>org.apache.avro</groupId>

@@ -26,16 +26,18 @@ import java.util.Arrays;
  */
 public class AvroMapOnly extends Configured implements Tool {
 
-    static class AvroIdentityMapper extends Mapper<AvroKey<GenericRecord>, NullWritable, AvroKey<Imps>, NullWritable> {
+    static class AvroIdFilterMapper extends Mapper<AvroKey<GenericRecord>, NullWritable, AvroKey<Imps>, NullWritable> {
+
+        private static final int MAGIC_NUMBER = 3;
 
         @Override
         protected void map(AvroKey<GenericRecord> key, NullWritable value, Context context)
                 throws IOException, InterruptedException {
-            GenericRecord record = key.datum();
-            int id = (Integer) record.get("id");
-            if (id != 3) {
-                Imps r = Imps.newBuilder().setId((Integer) record.get("id")).setName((CharSequence) record.get("name")).setCount((Integer) record.get("count")).build();
-                context.write(new AvroKey(r), NullWritable.get());
+            GenericRecord mapIn = key.datum();
+            int id = (Integer) mapIn.get("id");
+            if (id != MAGIC_NUMBER) {
+                Imps mapOut = Imps.newBuilder().setId(id).setName((CharSequence) mapIn.get("name")).setCount((Integer) mapIn.get("count")).build();
+                context.write(new AvroKey(mapOut), NullWritable.get());
             }
         }
 
@@ -56,10 +58,10 @@ public class AvroMapOnly extends Configured implements Tool {
 
         Schema schema = new Schema.Parser().parse(new File(args[2]));
         job.setInputFormatClass(AvroKeyInputFormat.class);
-        AvroJob.setInputKeySchema(job, schema);
+        //AvroJob.setInputKeySchema(job, schema);
         job.setOutputFormatClass(AvroKeyOutputFormat.class);
         AvroJob.setOutputKeySchema(job, schema);
-        job.setMapperClass(AvroIdentityMapper.class);
+        job.setMapperClass(AvroIdFilterMapper.class);
 
         job.setNumReduceTasks(0);
         return job.waitForCompletion(true) ? 0 : 1;
