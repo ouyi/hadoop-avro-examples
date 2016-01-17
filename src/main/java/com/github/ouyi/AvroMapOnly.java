@@ -58,9 +58,11 @@ public class AvroMapOnly extends Configured implements Tool {
 
         Schema schema = new Schema.Parser().parse(new File(args[2]));
         job.setInputFormatClass(AvroKeyInputFormat.class);
-        //AvroJob.setInputKeySchema(job, schema);
         job.setOutputFormatClass(AvroKeyOutputFormat.class);
+
+        // Required due to Error: java.io.IOException: AvroKeyOutputFormat requires an output schema. Use AvroJob.setOutputKeySchema()
         AvroJob.setOutputKeySchema(job, schema);
+
         job.setMapperClass(AvroIdFilterMapper.class);
 
         job.setNumReduceTasks(0);
