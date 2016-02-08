@@ -1,6 +1,5 @@
 package com.github.ouyi;
 
-import com.github.ouyi.avro.Imps;
 import org.apache.avro.Schema;
 import org.apache.avro.generic.GenericData;
 import org.apache.avro.generic.GenericRecord;
@@ -23,7 +22,7 @@ import java.io.IOException;
 import java.util.Arrays;
 
 /**
- * Hello world!
+ * A simple map-only job where the input and output share the same schema
  */
 public class AvroMapOnly extends Configured implements Tool {
 
@@ -36,13 +35,18 @@ public class AvroMapOnly extends Configured implements Tool {
                 throws IOException, InterruptedException {
             GenericRecord mapIn = key.datum();
             int id = (Integer) mapIn.get("id");
+
+            // Filter by one field
             if (id != MAGIC_NUMBER) {
+
+                // map output uses the same schema as map input
                 GenericRecord mapOut = new GenericData.Record(mapIn.getSchema());
                 mapOut.put("id", mapIn.get("id"));
                 mapOut.put("name", mapIn.get("name"));
                 mapOut.put("count", mapIn.get("count"));
 
-                //Imps mapOut = Imps.newBuilder().setId(id).setName((CharSequence) mapIn.get("name")).setCount((Integer) mapIn.get("count")).build();
+                // Output can also use the generated type, then the map output key type shall be AvroKey<Imps> and the key object can be created as follows:
+                // Imps mapOut = Imps.newBuilder().setId(id).setName((CharSequence) mapIn.get("name")).setCount((Integer) mapIn.get("count")).build();
                 context.write(new AvroKey(mapOut), NullWritable.get());
             }
         }
