@@ -81,12 +81,7 @@
                         <manifest>
                             <addClasspath>true</addClasspath>
                             <classpathPrefix>lib</classpathPrefix>
-                            <mainClass>com.github.ouyi.AvroMapOnly</mainClass>
-                            <!--<mainClass>com.github.ouyi.MapReduceColorCount</mainClass>-->
                         </manifest>
-                        <!--<manifestEntries>-->
-                            <!--<Class-Path>lib/</Class-Path>-->
-                        <!--</manifestEntries>-->
                     </archive>
                 </configuration>
             </plugin>
