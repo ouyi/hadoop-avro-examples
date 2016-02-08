@@ -17,9 +17,9 @@ import java.io.IOException;
 import java.util.Arrays;
 
 /**
- * Hello world!
+ * Map-only job with Text input and multiple outputs by input key (the first field in the input value)
  */
-public class App extends Configured implements Tool {
+public class TextMoMapOnly extends Configured implements Tool {
 
   static class MultipleOutputsMapper extends Mapper<LongWritable, Text, NullWritable, Text> {
 
@@ -33,6 +33,7 @@ public class App extends Configured implements Tool {
     @Override
     protected void map(LongWritable key, Text value, Context context)
         throws IOException, InterruptedException {
+      // KEYOUT key, VALUEOUT value, String baseOutputPath
       mos.write(NullWritable.get(), value, value.toString().split("\t")[0]);
     }
 
@@ -44,7 +45,7 @@ public class App extends Configured implements Tool {
 
   public static void main(String[] args) throws Exception {
     System.out.println("Called main with args: " + Arrays.deepToString(args));
-    int exitCode = ToolRunner.run(new App(), args);
+    int exitCode = ToolRunner.run(new TextMoMapOnly(), args);
     System.exit(exitCode);
   }
 
