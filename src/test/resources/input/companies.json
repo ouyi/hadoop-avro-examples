@@ -1,0 +1,3 @@
+{"id":1,"name":"msft","employeeCount":53, "address": {"street": "MS Redmond Campus", "city": "Redmond"}}
+{"id":2,"name":"aol","employeeCount":18, "address": {"street": "770 Broadway", "city": "NY City"}}
+{"id":3,"name":"google","employeeCount":123, "address": {"street": "Googleplex", "city": "Mountain View"}}

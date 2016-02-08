@@ -1,0 +1,36 @@
+{
+    "namespace": "com.github.ouyi.avro",
+    "fields": [
+        {
+            "name": "id",
+            "type": "int"
+        },
+        {
+            "name": "name",
+            "type": "string"
+        },
+        {
+            "name": "employeeCount",
+            "type": "int"
+        },
+        {
+            "name": "address",
+            "type": {
+                "fields": [
+                    {
+                        "name": "street",
+                        "type": "string"
+                    },
+                    {
+                        "name": "city",
+                        "type": "string"
+                    }
+                ],
+                "name": "Address",
+                "type": "record"
+            }
+        }
+    ],
+    "name": "Company",
+    "type": "record"
+}
