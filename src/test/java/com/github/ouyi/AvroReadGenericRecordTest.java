@@ -42,16 +42,21 @@ public class AvroReadGenericRecordTest extends TestCase {
         assertNotNull(schema);
 
         DatumReader<GenericRecord> datumReader = new GenericDatumReader<GenericRecord>(schema);
-        String file = this.getClass().getClassLoader().getResource("input/companies.avro").getFile();
-        DataFileReader<GenericRecord> dataFileReader = new DataFileReader<GenericRecord>(new File(file), datumReader);
+        // Another way of loading a file
+        File file = new File("src/test/resources/input/companies.avro");
+        System.out.println(file.getAbsolutePath());
+        DataFileReader<GenericRecord> dataFileReader = new DataFileReader<GenericRecord>(file, datumReader);
 
         GenericRecord company = null;
+        int count = 0;
         while (dataFileReader.hasNext()) {
             company = dataFileReader.next(company);
             GenericRecord address = (GenericRecord) company.get("address");
-            if (company.get("name").equals("aol")) {
-                assertEquals(address.get("city"), "NY City");
+            if (company.get("name").toString().equals("aol")) {
+                count ++;
+                assertEquals(address.get("city").toString(), "NY City");
             }
         }
+        assertTrue(count > 0);
     }
 }
