@@ -31,7 +31,7 @@ public class AvroMapOnlyDifferentSchema extends Configured implements Tool {
     static class AvroIdFilterMapper extends Mapper<AvroKey<GenericRecord>, NullWritable, AvroKey<GenericRecord>, NullWritable> {
 
         private static final int MAGIC_NUMBER = 3;
-        Schema outputSchema;
+        private Schema outputSchema;
 
         @Override
         protected void setup(Context context) throws IOException, InterruptedException {
@@ -48,7 +48,7 @@ public class AvroMapOnlyDifferentSchema extends Configured implements Tool {
             // Filter by one field
             if (id != MAGIC_NUMBER) {
 
-                GenericRecord mapOut = new GenericData.Record(mapIn.getSchema());
+                GenericRecord mapOut = new GenericData.Record(outputSchema);
                 mapOut.put("id", mapIn.get("id"));
                 mapOut.put("name", mapIn.get("name"));
                 GenericRecord address = new GenericData.Record((GenericData.Record) mapIn.get("address"), true);
