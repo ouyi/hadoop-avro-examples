@@ -22,7 +22,7 @@ import java.io.IOException;
 import java.util.Arrays;
 
 /**
- * A simple map-only job where the input and output share the same outputSchema
+ * A simple map-only job where the input and output have different schemas
  */
 public class AvroMapOnlyDifferentSchema extends Configured implements Tool {
 
@@ -67,6 +67,10 @@ public class AvroMapOnlyDifferentSchema extends Configured implements Tool {
     @Override
     public int run(String[] args) throws Exception {
         System.out.println("Running with args: " + Arrays.deepToString(args));
+
+        Schema outputSchema = new Schema.Parser().parse(new File(args[2]));
+        // Pass this to the mapper
+        getConf().set(schemaKey, outputSchema.toString());
         Job job = Job.getInstance(getConf());
         job.setJarByClass(getClass());
         FileInputFormat.addInputPath(job, new Path(args[0]));
@@ -75,9 +79,7 @@ public class AvroMapOnlyDifferentSchema extends Configured implements Tool {
         job.setInputFormatClass(AvroKeyInputFormat.class);
         job.setOutputFormatClass(AvroKeyOutputFormat.class);
 
-        Schema outputSchema = new Schema.Parser().parse(new File(args[2]));
-        // Pass this to the mapper
-        getConf().set(schemaKey, outputSchema.toString());
+
         // Required due to Error: java.io.IOException: AvroKeyOutputFormat requires an output outputSchema. Use AvroJob.setOutputKeySchema()
         AvroJob.setOutputKeySchema(job, outputSchema);
 

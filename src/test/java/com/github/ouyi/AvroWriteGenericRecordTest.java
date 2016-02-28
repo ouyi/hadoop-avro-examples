@@ -65,6 +65,8 @@ public class AvroWriteGenericRecordTest extends TestCase {
                 GenericRecord recordOut = new GenericData.Record(schemaOut);
                 recordOut.put("id", company.get("id"));
                 recordOut.put("name", company.get("name"));
+                assertTrue(recordOut.getSchema().getField("address") != null);
+                assertTrue(recordOut.getSchema().getField("employeeCount") == null);
                 GenericRecord address = new GenericData.Record((GenericData.Record) company.get("address"), true);
                 recordOut.put("address", address);
 
