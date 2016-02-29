@@ -18,7 +18,7 @@ import java.io.IOException;
 import java.net.URL;
 
 /**
- * Unit test for retrieving nested record.
+ * Unit test for writing nested record.
  */
 public class AvroWriteGenericRecordTest extends TestCase {
 
@@ -67,6 +67,8 @@ public class AvroWriteGenericRecordTest extends TestCase {
                 recordOut.put("name", company.get("name"));
                 assertTrue(recordOut.getSchema().getField("address") != null);
                 assertTrue(recordOut.getSchema().getField("employeeCount") == null);
+
+                // address is of complex type
                 GenericRecord address = new GenericData.Record((GenericData.Record) company.get("address"), true);
                 recordOut.put("address", address);
 

@@ -22,7 +22,8 @@ import java.io.IOException;
 import java.util.Arrays;
 
 /**
- * A simple map-only job where the input and output have different schemas
+ * A simple map-only job where the input and output have different schemas.
+ * The outputSchema is passed from the driver program to the mapper via the context object.
  */
 public class AvroMapOnlyDifferentSchema extends Configured implements Tool {
 
@@ -78,7 +79,6 @@ public class AvroMapOnlyDifferentSchema extends Configured implements Tool {
 
         job.setInputFormatClass(AvroKeyInputFormat.class);
         job.setOutputFormatClass(AvroKeyOutputFormat.class);
-
 
         // Required due to Error: java.io.IOException: AvroKeyOutputFormat requires an output outputSchema. Use AvroJob.setOutputKeySchema()
         AvroJob.setOutputKeySchema(job, outputSchema);
